@@ -120,3 +120,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#added stackoverflow https://stackoverflow.com/questions/70904550/error-blog-comment-models-w042-auto-created-primary-key-used-when-not-defini
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
