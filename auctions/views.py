@@ -66,7 +66,8 @@ def create_listing(request):
     if request.method == 'POST':
         form = CreateListingsForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            newimage = listings(image=request.FILES['image'],user=request.user)
+            newimage.save()
             
     return render(request, "auctions/create.html", {
         "form": CreateListingsForm()
