@@ -77,8 +77,8 @@ def create_listing(request):
     })
 
 
-def listings_view(request, listings_title):
-    listing = listings.objects.get(title=listings_title)
+def listing_view(request, listing_title):
+    listing = listings.objects.get(title=listing_title)
     return render(request, "auctions/listings.html", {
         "listings": listing
     })
