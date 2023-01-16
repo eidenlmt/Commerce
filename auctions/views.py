@@ -7,6 +7,8 @@ from django.urls import reverse
 from .models import User, listings
 from .forms import CreateListingsForm
 
+watchlist = ["item1", "item2"]
+
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -80,5 +82,21 @@ def create_listing(request):
 def listing_view(request, listing_title):
     listing = listings.objects.get(title=listing_title)
     return render(request, "auctions/listings.html", {
-        "listings": listing
+        "listing": listing
     })
+
+
+def watchlist_view(request):
+    if "watchlist" not in request.session:
+        request.session["watchlist"] = []
+    return render(request, "auctions/watchlist.html", {
+        "watchlist": request.session["watchlist"],
+        "listings": listings.objects.all()
+    })
+
+
+def watchlist_add(request, listing_title):
+    if request.method == "POST":
+        request.session["watchlist"] += [listing_title]
+
+    return HttpResponseRedirect(reverse("watchlist_view"))
