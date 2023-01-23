@@ -1,7 +1,7 @@
 {% extends "auctions/layout.html" %} {% block body %}
 <h2>{{ listing.title }}</h2>
 
-        <form action="{ url 'watchlist_add' listing.title }" method="post">
+        <form action="{% url 'watchlist_add' listing.title %}" method="post">
                 {% csrf_token %}
                 <input type="button" value="Watchlist"/>
         </form>

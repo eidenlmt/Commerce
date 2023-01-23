@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, listings
+from .models import User, listings, watchlist
 
 # Register your models here.
 class listingsAdmin(admin.ModelAdmin):
@@ -8,3 +8,4 @@ class listingsAdmin(admin.ModelAdmin):
 
 admin.site.register(User, UserAdmin),
 admin.site.register(listings, listingsAdmin)
+admin.site.register(watchlist)

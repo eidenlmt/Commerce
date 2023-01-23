@@ -3,11 +3,12 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
-from .models import User, listings
+
+from .models import User, listings, watchlist
 from .forms import CreateListingsForm
-
-watchlist = ["item1", "item2"]
 
 
 def index(request):
@@ -78,7 +79,6 @@ def create_listing(request):
         "form": CreateListingsForm()
     })
 
-
 def listing_view(request, listing_title):
     listing = listings.objects.get(title=listing_title)
     return render(request, "auctions/listings.html", {
@@ -96,7 +96,14 @@ def watchlist_view(request):
 
 
 def watchlist_add(request, listing_title):
-    if request.method == "POST":
-        request.session["watchlist"] += [listing_title]
-
+    listing = get_object_or_404(listings, title=listing_title)
+    already_existed = watchlist.objects.get(user=request.user, item=listing).exists()
+    if already_existed:
+        return render(request, "auctions/listings.html", {
+            "message": "already in watchlist"
+        })
+    else:
+        watchlist.objects.create(user=request.user, item=listing)
+    
     return HttpResponseRedirect(reverse("watchlist_view"))
+
