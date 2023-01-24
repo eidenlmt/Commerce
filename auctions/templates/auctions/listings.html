@@ -1,9 +1,9 @@
 {% extends "auctions/layout.html" %} {% block body %}
 <h2>{{ listing.title }}</h2>
-
+{% if user.is_authenticated %}
         <form action="{% url 'watchlist_add' listing.title %}" method="post">
                 {% csrf_token %}
                 <input type="button" value="Watchlist"/>
         </form>
-
+{% endif %}
 {% endblock %}

@@ -69,6 +69,7 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
+@login_required
 def create_listing(request):
     if request.method == 'POST':
         form = CreateListingsForm(request.POST, request.FILES)
@@ -79,6 +80,8 @@ def create_listing(request):
         "form": CreateListingsForm()
     })
 
+
+@login_required
 def listing_view(request, listing_title):
     listing = listings.objects.get(title=listing_title)
     return render(request, "auctions/listings.html", {
@@ -86,6 +89,7 @@ def listing_view(request, listing_title):
     })
 
 
+@login_required
 def watchlist_view(request):
     if "watchlist" not in request.session:
         request.session["watchlist"] = []
@@ -95,6 +99,7 @@ def watchlist_view(request):
     })
 
 
+@login_required
 def watchlist_add(request, listing_title):
     listing = get_object_or_404(listings, title=listing_title)
     already_existed = watchlist.objects.get(user=request.user, item=listing).exists()
