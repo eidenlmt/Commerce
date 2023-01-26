@@ -99,14 +99,13 @@ def watchlist_view(request):
 
 @login_required
 def watchlist_add(request, listing_id):
-    if request.method == "POST":
-        listing = get_object_or_404(listings, pk=listing_id)
-        already_existed = watchlist.objects.get(user=request.user, item=listing).exists()
-        if already_existed:
-            return render(request, "auctions/listings.html", {
-                "message": "already in watchlist"
-            })
-        else:
-            watchlist.objects.create(user=request.user, item=listing)
-    
+    listing = get_object_or_404(listings, id=listing_id)
+    already_existed = watchlist.objects.get_or_create(user=request.user, item=listing).exists()
+    if already_existed:
+        return render(request, "auctions/listings.html", {
+            "message": "already in watchlist"
+        })
+    else:
+        add = watchlist.objects.create(user=request.user, item=listing)
+        add.save()
         return HttpResponseRedirect(reverse("watchlist_view"))

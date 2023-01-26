@@ -2,9 +2,6 @@
 <h2>{{ listing.title }}</h2>
 <h2>{{ listing.id }}</h2>
 {% if user.is_authenticated %}
-        <form action="{% url 'watchlist_add' listing.id %}" method="post">
-                {% csrf_token %}
-                <input type="button" value="Watchlist"/>
-        </form>
+<a href="{% url 'watchlist_add' listing.id %}" role="button" class="btn btn-primary btn-block">Add to Watchlist</a> 
 {% endif %}
 {% endblock %}
