@@ -2,12 +2,8 @@
 <h2>Watchlist</h2>
 
 {% for listing in watchlist %}
-{% if listing in listings %}
-<ul>
-  <li>listing.title</li>
-</ul>
-<!--
-<a href="{% url 'listing_view' listing.title%}" style="color: black">
+
+<a href="{% url 'listing_view' listing.id%}" style="color: black">
 <div class="card text-bg-light mb-3">
     <div class="row g-0">
       <div class="col-md-4">
@@ -23,8 +19,7 @@
     </div>
   </div>
 </a>
--->
-{% endif %}
+
 {% endfor %}
 
 {% endblock %}

@@ -3,7 +3,7 @@
 
 {% for listing in listings %}
 
-<a href="{% url 'listing_view' listing.title%}" style="color: black">
+<a href="{% url 'listing_view' listing.id%}" style="color: black">
 <div class="card text-bg-light mb-3">
     <div class="row g-0">
       <div class="col-md-4">

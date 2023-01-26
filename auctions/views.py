@@ -82,8 +82,8 @@ def create_listing(request):
 
 
 @login_required
-def listing_view(request, listing_title):
-    listing = listings.objects.get(title=listing_title)
+def listing_view(request, listing_id):
+    listing = get_object_or_404(listings, pk=listing_id)
     return render(request, "auctions/listings.html", {
         "listing": listing
     })
@@ -91,24 +91,22 @@ def listing_view(request, listing_title):
 
 @login_required
 def watchlist_view(request):
-    if "watchlist" not in request.session:
-        request.session["watchlist"] = []
     return render(request, "auctions/watchlist.html", {
-        "watchlist": request.session["watchlist"],
+        "watchlist": watchlist.objects.all(),
         "listings": listings.objects.all()
     })
 
 
 @login_required
-def watchlist_add(request, listing_title):
-    listing = get_object_or_404(listings, title=listing_title)
-    already_existed = watchlist.objects.get(user=request.user, item=listing).exists()
-    if already_existed:
-        return render(request, "auctions/listings.html", {
-            "message": "already in watchlist"
-        })
-    else:
-        watchlist.objects.create(user=request.user, item=listing)
+def watchlist_add(request, listing_id):
+    if request.method == "POST":
+        listing = get_object_or_404(listings, pk=listing_id)
+        already_existed = watchlist.objects.get(user=request.user, item=listing).exists()
+        if already_existed:
+            return render(request, "auctions/listings.html", {
+                "message": "already in watchlist"
+            })
+        else:
+            watchlist.objects.create(user=request.user, item=listing)
     
-    return HttpResponseRedirect(reverse("watchlist_view"))
-
+        return HttpResponseRedirect(reverse("watchlist_view"))

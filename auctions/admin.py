@@ -6,6 +6,9 @@ from .models import User, listings, watchlist
 class listingsAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "price")
 
+class watchlistAdmin(admin.ModelAdmin):
+    list_display = ("user", "item")
+
 admin.site.register(User, UserAdmin),
 admin.site.register(listings, listingsAdmin)
-admin.site.register(watchlist)
+admin.site.register(watchlist, watchlistAdmin)
