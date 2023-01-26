@@ -3,16 +3,16 @@
 
 {% for listing in watchlist %}
 
-<a href="{% url 'listing_view' listing.id%}" style="color: black">
+<a href="{% url 'listing_view' listing.item.id%}" style="color: black">
 <div class="card text-bg-light mb-3">
     <div class="row g-0">
       <div class="col-md-4">
-        <img src="{{ listing.image }}" class="img-fluid rounded-start" alt="no picture">
+        <img src="{{ listing.item.image }}" class="img-fluid rounded-start" alt="no picture">
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title">{{ listing.title }}</h5>
-          <p class="card-text">Price: ${{ listing.price }}</p>
+          <h5 class="card-title">{{ listing.item.title }}</h5>
+          <p class="card-text">Price: ${{ listing.item.price }}</p>
           <p class="card-text"><small class="text-muted"></small></p>
         </div>
       </div>
