@@ -13,6 +13,7 @@
     <link href="{% static 'auctions/styles.css' %}" rel="stylesheet" />
   </head>
   <body>
+
     <h1>Auctions</h1>
     <div>
       {% if user.is_authenticated %} Signed in as
@@ -43,6 +44,7 @@
       {% endif %}
     </ul>
     <hr />
+    {% include 'auctions/messages.html' %}
     {% block body %} {% endblock %}
   </body>
 </html>

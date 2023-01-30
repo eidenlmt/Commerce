@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-
+from django.contrib import messages
 
 from .models import User, listings, watchlist
 from .forms import CreateListingsForm
@@ -100,12 +100,14 @@ def watchlist_view(request):
 @login_required
 def watchlist_add(request, listing_id):
     listing = get_object_or_404(listings, id=listing_id)
-    already_existed = watchlist.objects.get_or_create(user=request.user, item=listing).exists()
-    if already_existed:
-        return render(request, "auctions/listings.html", {
-            "message": "already in watchlist"
-        })
+    already_existed = watchlist.objects.filter(user=request.user, item=listing)
+
+    if already_existed.exists():
+        already_existed.delete()
+        messages.info(request, 'Successfully deleted from your watchlist')
+        return HttpResponseRedirect(reverse("watchlist_view"))
     else:
         add = watchlist.objects.create(user=request.user, item=listing)
         add.save()
+        messages.success(request, 'Successfully added to your watchlist')
         return HttpResponseRedirect(reverse("watchlist_view"))
