@@ -23,6 +23,7 @@ class listings(models.Model):
     created_on = models.DateTimeField(auto_now=True)
     price = models.DecimalField(max_digits=8, decimal_places=2, default='Starting Price')
     image = models.ImageField(upload_to='auctions/files/images', default='Photo', blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 class bids(models.Model):
     bids = models.DecimalField(max_digits=8, decimal_places=2 , default='Bid')
@@ -33,8 +34,8 @@ class comments(models.Model):
     pass
 
 class watchlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     item = models.ForeignKey(listings, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.user} watchlist"
