@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
 from .models import User, listings, watchlist
-from .forms import CreateListingsForm
+from .forms import CreateListingsForm, BidsForm
 
 
 def index(request):
@@ -92,8 +92,8 @@ def listing_view(request, listing_id):
 @login_required
 def watchlist_view(request):
     return render(request, "auctions/watchlist.html", {
-        "watchlist": watchlist.objects.all(),
-        "listings": listings.objects.all()
+        "watchlist": watchlist.objects.filter(user=request.user)
+
     })
 
 
@@ -111,3 +111,14 @@ def watchlist_add(request, listing_id):
         add.save()
         messages.success(request, 'Successfully added to your watchlist')
         return HttpResponseRedirect(reverse("watchlist_view"))
+
+@login_required
+def place_bid(request):
+    if request.method == 'POST':
+        form = BidsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            
+    return render(request, "auctions/listings.html", {
+        "form": BidsForm()
+    })
