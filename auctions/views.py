@@ -93,7 +93,6 @@ def listing_view(request, listing_id):
 def watchlist_view(request):
     return render(request, "auctions/watchlist.html", {
         "watchlist": watchlist.objects.filter(user=request.user)
-
     })
 
 
