@@ -84,9 +84,24 @@ def create_listing(request):
 @login_required
 def listing_view(request, listing_id):
     listing = get_object_or_404(listings, pk=listing_id)
+
     return render(request, "auctions/listings.html", {
-        "listing": listing
+        "listing": listing,
+        "form": BidsForm()
     })
+
+
+@login_required
+def place_bid(request, listing_id):
+    listing = get_object_or_404(listings, pk=listing_id)
+
+    if request.method == 'POST':
+        form = BidsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            listing.price = form.cleaned_data["bids"]
+            listing.save()
+            return HttpResponseRedirect(reverse("listing_view", args=[listing_id]))
 
 
 @login_required
@@ -111,13 +126,6 @@ def watchlist_add(request, listing_id):
         messages.success(request, 'Successfully added to your watchlist')
         return HttpResponseRedirect(reverse("watchlist_view"))
 
-@login_required
-def place_bid(request):
-    if request.method == 'POST':
-        form = BidsForm(request.POST)
-        if form.is_valid():
-            form.save()
-            
-    return render(request, "auctions/listings.html", {
-        "form": BidsForm()
-    })
+
+
+

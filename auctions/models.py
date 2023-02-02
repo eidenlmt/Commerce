@@ -29,7 +29,6 @@ class bids(models.Model):
     bids = models.DecimalField(max_digits=8, decimal_places=2 , default='Bid')
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
-
 class comments(models.Model):
     pass
 

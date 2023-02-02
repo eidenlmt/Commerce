@@ -1,24 +1,24 @@
 {% extends "auctions/layout.html" %} {% block body %}
 
-<div class=""> <!--site content div-->
-    <div class=""> <!--title-->
+<div class=""> 
+    <div class="">
         <h2>Listing: {{ listing.title }}</h2>
     </div>
-    <div class=""> <!--body-->
-        <div class=""> <!--watchlist button-->
+    <div class=""> 
+        <div class=""> 
             <a href="{% url 'watchlist_add' listing.id %}" role="button" class="btn btn-secondary">Add to Watchlist</a>
         </div>
-        <div class=""> <!--img-->
+        <div class=""> 
             <img src="{{ listing.image }}" class="img-fluid rounded-start" alt="no picture">
         </div>
-        <div class=""> <!--description-->
+        <div class=""> 
             <p>{{ listing.description }}</p>
         </div>
-        <div class=""> <!--Price-->
+        <div class=""> 
             <p>{{ listing.price }}</p>
         </div>
-        <div class=""> <!--BidsForm-->
-            <form action="{% url 'place_bid' %}" method="post" enctype="multipart/form-data">
+        <div class=""> 
+            <form action="{% url 'place_bid' listing.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %} {{ form.as_p }}
                 <button type="submit">Place Bid</button>
             </form>
