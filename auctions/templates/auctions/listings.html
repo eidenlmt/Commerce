@@ -9,7 +9,7 @@
             <a href="{% url 'watchlist_add' listing.id %}" role="button" class="btn btn-secondary">Add to Watchlist</a>
         </div>
         <div class=""> 
-            <img src="{{ listing.image }}" class="img-fluid rounded-start" alt="no picture">
+            <img src="{{ listing.image.url }}" class="img-fluid rounded-start" alt="no picture">
         </div>
         <div class=""> 
             <p>{{ listing.description }}</p>

@@ -22,7 +22,7 @@ class listings(models.Model):
     category = models.CharField(max_length=30, choices=CATEGORIES, default='misc')
     created_on = models.DateTimeField(auto_now=True)
     price = models.DecimalField(max_digits=8, decimal_places=2, default='Starting Price')
-    image = models.ImageField(upload_to='auctions/files/images', default='Photo', blank=True)
+    image = models.ImageField(default='Photo', blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 class bids(models.Model):
