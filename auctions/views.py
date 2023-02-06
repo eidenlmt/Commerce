@@ -94,15 +94,19 @@ def listing_view(request, listing_id):
 @login_required
 def place_bid(request, listing_id):
     listing = get_object_or_404(listings, pk=listing_id)
-
     if request.method == 'POST':
         form = BidsForm(request.POST)
         if form.is_valid():
-            form.save()
-            listing.price = form.cleaned_data["bids"]
-            listing.save()
-            return HttpResponseRedirect(reverse("listing_view", args=[listing_id]))
-
+            bid = form.cleaned_data["bids"]
+            if bid > listing.price:
+                form.save()
+                listing.price = bid
+                listing.save()
+                messages.success(request, 'Your are currently the highest bidder')
+                return HttpResponseRedirect(reverse("listing_view", args=[listing_id]))
+            else:
+                messages.error(request, 'Your Bid must be greater than the current bid')
+                return HttpResponseRedirect(reverse("listing_view", args=[listing_id]))
 
 @login_required
 def watchlist_view(request):
