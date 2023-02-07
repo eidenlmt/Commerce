@@ -4,10 +4,12 @@
     <div class="">
         <h2>Listing: {{ listing.title }}</h2>
     </div>
-    <div class=""> 
+    <div class="">
+        {% if user.is_authenticated %} 
         <div class=""> 
             <a href="{% url 'watchlist_add' listing.id %}" role="button" class="btn btn-secondary">Add to Watchlist</a>
         </div>
+        {% endif %}
         <div class=""> 
             <img src="{{ listing.image.url }}" class="img-fluid rounded-start" alt="no picture">
         </div>
@@ -15,14 +17,23 @@
             <p>{{ listing.description }}</p>
         </div>
         <div class=""> 
-            <p>{{ listing.price }}</p>
+            <p>Price: {{ listing.price }}</p>
         </div>
+        {% if user.is_authenticated %}
         <div class=""> 
             <form action="{% url 'place_bid' listing.id %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %} {{ form.as_p }}
+                {% csrf_token %} {{ form }}
                 <button type="submit">Place Bid</button>
             </form>
         </div>
+        <p>{{ listing.user }}</p>
+
+        {% if listing.user == request.user %}
+        <div>
+            <a href="{% url 'close' listing.id %}" role="button">close</a>
+        </div>
+        {% endif %}
+        {% endif %}
     </div>
 </div>
 

@@ -69,19 +69,6 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
-@login_required
-def create_listing(request):
-    if request.method == 'POST':
-        form = CreateListingsForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            
-    return render(request, "auctions/create.html", {
-        "form": CreateListingsForm()
-    })
-
-
-@login_required
 def listing_view(request, listing_id):
     listing = get_object_or_404(listings, pk=listing_id)
 
@@ -92,6 +79,30 @@ def listing_view(request, listing_id):
 
 
 @login_required
+def create_listing(request):
+    if request.method == 'POST':
+        form = CreateListingsForm(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save()
+            obj.user = request.user
+            obj.save()
+            return HttpResponseRedirect(reverse("index"))
+
+    return render(request, "auctions/create.html", {
+        "form": CreateListingsForm()
+    })
+
+
+@login_required
+def close_listing(request, listing_id):
+    listing = get_object_or_404(listings, pk=listing_id)
+    listing.active = False
+    listing.save()
+    messages.success(request, 'Auction was closed successfully')
+    return HttpResponseRedirect(reverse("listing_view", args=[listing_id]))
+
+
+@login_required
 def place_bid(request, listing_id):
     listing = get_object_or_404(listings, pk=listing_id)
     if request.method == 'POST':
@@ -99,7 +110,9 @@ def place_bid(request, listing_id):
         if form.is_valid():
             bid = form.cleaned_data["bids"]
             if bid > listing.price:
-                form.save()
+                obj = form.save()
+                obj.user = request.user
+                obj.save()
                 listing.price = bid
                 listing.save()
                 messages.success(request, 'Your are currently the highest bidder')
@@ -107,6 +120,7 @@ def place_bid(request, listing_id):
             else:
                 messages.error(request, 'Your Bid must be greater than the current bid')
                 return HttpResponseRedirect(reverse("listing_view", args=[listing_id]))
+
 
 @login_required
 def watchlist_view(request):

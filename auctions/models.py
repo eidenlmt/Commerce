@@ -17,6 +17,7 @@ class User(AbstractUser):
     pass
 
 class listings(models.Model):
+    active = models.BooleanField(default=True)
     title = models.CharField(max_length=64, default='Title')
     description = models.TextField(max_length=256, default='Description')
     category = models.CharField(max_length=30, choices=CATEGORIES, default='misc')
