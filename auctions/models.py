@@ -16,6 +16,13 @@ CATEGORIES = [
 class User(AbstractUser):
     pass
 
+class comments(models.Model):
+    pass
+
+class bids(models.Model):
+    bid = models.DecimalField(max_digits=8, decimal_places=2 , default='Bid')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+
 class listings(models.Model):
     active = models.BooleanField(default=True)
     title = models.CharField(max_length=64, default='Title')
@@ -23,15 +30,9 @@ class listings(models.Model):
     category = models.CharField(max_length=30, choices=CATEGORIES, default='misc')
     created_on = models.DateTimeField(auto_now=True)
     price = models.DecimalField(max_digits=8, decimal_places=2, default='Starting Price')
+    bids = models.ManyToManyField(bids, blank=True, related_name="bids")
     image = models.ImageField(default='Photo', blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
-class bids(models.Model):
-    bids = models.DecimalField(max_digits=8, decimal_places=2 , default='Bid')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
-class comments(models.Model):
-    pass
 
 class watchlist(models.Model):
     item = models.ForeignKey(listings, on_delete=models.CASCADE, null=True)

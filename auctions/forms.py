@@ -10,4 +10,4 @@ class CreateListingsForm(forms.ModelForm):
 class BidsForm(forms.ModelForm): 
     class Meta: 
         model = bids 
-        fields = ['bids'] 
+        fields = ['bid'] 

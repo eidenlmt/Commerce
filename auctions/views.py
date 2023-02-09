@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
-from .models import User, listings, watchlist
+from .models import User, listings, watchlist, bids
 from .forms import CreateListingsForm, BidsForm
 
 
@@ -108,7 +108,7 @@ def place_bid(request, listing_id):
     if request.method == 'POST':
         form = BidsForm(request.POST)
         if form.is_valid():
-            bid = form.cleaned_data["bids"]
+            bid = form.cleaned_data["bid"]
             if bid > listing.price:
                 obj = form.save()
                 obj.user = request.user
