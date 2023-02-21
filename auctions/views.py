@@ -74,6 +74,7 @@ def listing_view(request, listing_id):
 
     return render(request, "auctions/listings.html", {
         "listing": listing,
+        "winner": listing.bids.last().user,
         "form": BidsForm()
     })
 
@@ -105,14 +106,19 @@ def close_listing(request, listing_id):
 @login_required
 def place_bid(request, listing_id):
     listing = get_object_or_404(listings, pk=listing_id)
+
     if request.method == 'POST':
         form = BidsForm(request.POST)
         if form.is_valid():
             bid = form.cleaned_data["bid"]
             if bid > listing.price:
-                obj = form.save()
-                obj.user = request.user
-                obj.save()
+                bids_obj = form.save()
+                bids_obj.user = request.user
+                bids_obj.save()
+
+                listing.bids.add(bids_obj)
+
+                #listing.bids = bids_obj
                 listing.price = bid
                 listing.save()
                 messages.success(request, 'Your are currently the highest bidder')

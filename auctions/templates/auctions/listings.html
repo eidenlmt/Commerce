@@ -1,5 +1,16 @@
 {% extends "auctions/layout.html" %} {% block body %}
 
+{% if listing.active == False and winner == request.user %} 
+<div class="container-fluid p-0">
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="True">&times;</span>
+      </button>
+        Congratulations you have won the Auction!
+    </div>
+  </div>
+{% endif %}
+
 <div class=""> 
     <div class="">
         <h2>Listing: {{ listing.title }}</h2>
